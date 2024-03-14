@@ -1,0 +1,35 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url("https://fonts.googleapis.com/css2?family=Noto+Serif:ital,wght@0,100..900;1,100..900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Noto+Serif+SC&display=swap");
+
+#app {
+  font-family: "Noto Serif", "Noto Serif SC", serif;
+  @apply dark:bg-neutral-900 bg-white selection:bg-violet-200/20 dark:selection:bg-neutral-700/20 min-h-screen;
+}
+
+img,
+video {
+  max-width: unset;
+  height: auto;
+}
+
+*::-webkit-scrollbar {
+  @apply w-1 h-1;
+}
+*::-webkit-scrollbar-thumb {
+  @apply bg-neutral-200 dark:bg-neutral-700 rounded-full;
+}
+*::-webkit-scrollbar-track {
+  @apply bg-transparent;
+}
+
+audio::-webkit-media-controls-panel {
+  @apply bg-neutral-100 dark:bg-neutral-600;
+}
+
+textarea {
+  @apply bg-transparent;
+}
