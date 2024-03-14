@@ -2,7 +2,7 @@
     <div class="relative min-h-screen">
         <Sidebar></Sidebar>
 
-        <div class="pt-2 fixed z-20 w-96 top-4 right-2" v-if="current_task.status == 'pending'">
+        <div class="pt-2 fixed z-20 w-96 top-4 right-2" v-if="false">
             <div class="mx-auto max-w-screen-2xl px-4 pb-4 md:px-8">
                 <div
                     class="relative flex flex-wrap rounded-lg bg-violet-500 px-4 py-3 shadow-lg sm:flex-nowrap sm:items-center sm:justify-center sm:gap-3 sm:pr-8 md:px-8">
@@ -19,7 +19,7 @@
             class="w-full min-h-screen h-full lg:pt-5 pt-20 pb-10 px-4 sm:px-6 md:px-8 xl:ps-72">
             <RouterView></RouterView>
 
-            <template v-if="current_task.status == 'pending'">
+            <template v-if="false">
                 <div class="absolute top-0 start-0 w-full h-full bg-white/[.5] rounded-lg dark:bg-neutral-900/[.4]"></div>
                 <div class="absolute top-1/2 start-1/2 transform -tranneutral-x-1/2 -tranneutral-y-1/2">
                     <div class="animate-spin inline-block w-6 h-6 border-[3px] border-current border-t-transparent text-violet-400 rounded-full dark:text-violet-500"

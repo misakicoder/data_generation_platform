@@ -46,7 +46,7 @@
                     </RouterLink>
                 </div>
 
-                <RouterLink to="/playground/idea">
+                <RouterLink to="/playground/all">
                     <div
                         class="flex items-center gap-x-3.5 py-2 px-2.5 text-sm rounded-lg bg-violet-500 text-white hover:bg-violet-600 disabled:opacity-50 disabled:pointer-events-none dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-neutral-600 cursor-pointer mx-6 my-4">
                         <i class="ti ti-plus text-lg"></i>

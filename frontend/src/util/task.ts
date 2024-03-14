@@ -77,7 +77,7 @@ export const get_current_task = () => {
 
 export const get_all_my_tasks = () => {
   axios
-    .get("/api/account/movies/")
+    .get("/api/tasks")
     .then((res) => {
       task_list.value = res.data.tasks_list;
     })

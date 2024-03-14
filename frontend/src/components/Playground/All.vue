@@ -9,7 +9,7 @@
         <div class="grid grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-4  mt-5">
             <!-- Card -->
             
-            <RouterLink to="/playground/idea">
+            <RouterLink to="/playground/main">
                 <div
                     class="group flex flex-col  bg-white border shadow-sm rounded-xl hover:shadow-md transition dark:bg-neutral-900 dark:border-neutral-800 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-neutral-600 cursor-pointer hover:scale-105">
                     <div class="p-4 md:p-5">
@@ -26,7 +26,7 @@
                     </div>
                 </div>
             </RouterLink>
-            <RouterLink to="/playground/idea">
+            <RouterLink to="/playground/main">
                 <div
                     class="group flex flex-col bg-white border shadow-sm rounded-xl hover:shadow-md transition dark:bg-neutral-900 dark:border-neutral-800 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-neutral-600 cursor-pointer hover:scale-105">
                     <div class="p-4 md:p-5">
@@ -43,7 +43,7 @@
                     </div>
                 </div>
             </RouterLink>
-            <RouterLink to="/playground/idea">
+            <RouterLink to="/playground/main">
                 <div
                     class="group flex flex-col bg-white border shadow-sm rounded-xl hover:shadow-md transition dark:bg-neutral-900 dark:border-neutral-800 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-neutral-600 cursor-pointer hover:scale-105">
                     <div class="p-4 md:p-5">
@@ -60,7 +60,7 @@
                     </div>
                 </div>
             </RouterLink>
-            <RouterLink to="/playground/idea">
+            <RouterLink to="/playground/main">
                 <div
                     class="group flex flex-col bg-white border shadow-sm rounded-xl hover:shadow-md transition dark:bg-neutral-900 dark:border-neutral-800 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-neutral-600 cursor-pointer hover:scale-105">
                     <div class="p-4 md:p-5">
@@ -87,7 +87,7 @@
         <div class="grid grid-cols-3 lg:grid-cols-3 gap-4 sm:gap-4  mt-5">
             <!-- Card -->
             
-            <RouterLink to="/playground/idea">
+            <RouterLink to="/playground/main">
                 <div
                     class="group flex flex-col  bg-white border shadow-sm rounded-xl hover:shadow-md transition dark:bg-neutral-900 dark:border-neutral-800 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-neutral-600 cursor-pointer hover:scale-105">
                     <div class="p-4 md:p-5">
@@ -104,7 +104,7 @@
                     </div>
                 </div>
             </RouterLink>
-            <RouterLink to="/playground/idea">
+            <RouterLink to="/playground/main">
                 <div
                     class="group flex flex-col bg-white border shadow-sm rounded-xl hover:shadow-md transition dark:bg-neutral-900 dark:border-neutral-800 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-neutral-600 cursor-pointer hover:scale-105">
                     <div class="p-4 md:p-5">
@@ -121,7 +121,7 @@
                     </div>
                 </div>
             </RouterLink>
-            <RouterLink to="/playground/idea">
+            <RouterLink to="/playground/main">
                 <div
                     class="group flex flex-col bg-white border shadow-sm rounded-xl hover:shadow-md transition dark:bg-neutral-900 dark:border-neutral-800 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-neutral-600 cursor-pointer hover:scale-105">
                     <div class="p-4 md:p-5">

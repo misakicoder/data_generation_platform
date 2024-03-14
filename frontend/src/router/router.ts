@@ -3,6 +3,7 @@ import { type IStaticMethods } from "preline/preline";
 import Home from "@/views/Home.vue";
 import Playground from "@/views/Playground.vue";
 import All from "@/components/Playground/All.vue";
+import Main from "@/components/Playground/Main.vue";
 
 declare global {
   interface Window {
@@ -18,7 +19,11 @@ const routes = [
     {
       path: "all",
       component: All,
-    }
+    },
+    {
+      path: "main",
+      component: Main,
+    },
   ],}
 ];
 
