@@ -11,7 +11,7 @@ export default defineConfig({
         // hack: 服务器
         // target: "http://0.0.0.0:8000/",
         // 本地
-        target: "http://0.0.0.0:8000/",
+        target: "http://127.0.0.1:8000/",
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api/, ""),
       },

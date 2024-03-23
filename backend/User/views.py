@@ -9,7 +9,7 @@ from rest_framework.authtoken.models import Token
 
 
 def generate_verification_code():
-    return random.randint(100000, 999999)
+    return str(random.randint(100000, 999999))
 
 
 def check_phone_num(phone_num):
@@ -22,17 +22,18 @@ class login(View):
             session_verification_code = request.session.get("verification_code")
             user_code = kwargs.get("verification_code")
             if session_verification_code != user_code:
-                return JsonResponse({"status": "error", "message": "Invalid verification code"})
+                return JsonResponse({"status": "Invalid verification", "message": "Invalid verification code"})
             phone_num = kwargs.get("phone_num")
-            user = User.objects.get(phoneNumber=phone_num)
+            print(f"phone_num:{phone_num}")
+            user = User.objects.filter(phone_number=phone_num).first()
+            print(f"user:{user}")
             if user is None:
-                user_uuid = str(uuid.uuid4())
-                user_name = "user" + user_uuid
-                user = User.objects.create(phoneNumber=phone_num, is_admin_or_not=False, user_name=user_name)
+                user = User.objects.create(phone_number=phone_num)
                 user.save()
             request.session["user_id"] = user.user_id
             return JsonResponse({"status": "success", "message": "Login successful"})
         except Exception as e:
+            print(f"error:{e}")
             return JsonResponse({"status": "error", "message": str(e)})
 
 

@@ -4,6 +4,7 @@ import Home from "@/views/Home.vue";
 import Playground from "@/views/Playground.vue";
 import All from "@/components/Playground/All.vue";
 import Main from "@/components/Playground/Main.vue";
+import Login from "@/views/Login.vue";
 
 declare global {
   interface Window {
@@ -13,6 +14,7 @@ declare global {
 
 const routes = [
   { path: "/", component: Home },
+  { path: "/login", component: Login },
   { path: "/playground",
     component: Playground,
     children: [

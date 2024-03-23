@@ -11,7 +11,7 @@
                     </span>
                 </h1>
                 <div>
-                    <RouterLink to = '/playground/all'>
+                    <RouterLink to = '/login'>
                         <div
                             class="inline-flex m-3 justify-center items-center gap-x-3 text-center text-white font-medium rounded-md focus:outline-none focus:ring-2 py-1 px-4 bg-gradient-to-r from-blue-500 to-violet-500 hover:scale-105 duration-200 text-lg">
                             <i class="ti ti-arrow-loop-right text-lg"></i>

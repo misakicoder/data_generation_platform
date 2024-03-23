@@ -4,15 +4,6 @@
         <nav class="relative max-w-7xl w-full mx-auto p-2 sm:flex sm:items-center sm:justify-between sm:px-6 lg:px-8"
             aria-label="Global">
             <div class="flex items-center justify-between">
-                <RouterLink to="/">
-                    <div class="flex justify-center items-center text-xl font-semibold">
-                        <Clapperboard :size="20" class="text-pink-500 dark:text-white" />
-                        <span
-                            class="dark:text-white bg-clip-text text-transparent bg-gradient-to-r from-pink-500 to-violet-500 pl-2">
-                            FilmAction
-                        </span>
-                    </div>
-                </RouterLink>
                 <div class="sm:hidden">
                     <button type="button"
                         class="hs-collapse-toggle w-9 h-9 flex justify-center items-center text-sm font-semibold rounded-lg border border-neutral-200 text-neutral-800 hover:bg-neutral-100 disabled:opacity-50 disabled:pointer-events-none dark:text-white dark:border-neutral-700 dark:hover:bg-neutral-700 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-neutral-600"
@@ -48,14 +39,6 @@
                             class="font-medium text-neutral-500 hover:text-neutral-400 dark:text-neutral-400 dark:hover:text-neutral-500">关于我们</a>
                     </RouterLink> -->
 
-
-                    <RouterLink :to="is_login ? '/playground/all' : '/login'">
-                        <div
-                            class="inline-flex m-1 justify-center items-center gap-x-3 text-center text-white font-medium rounded-md focus:outline-none focus:ring-2 py-1 px-4 bg-gradient-to-r from-pink-500 to-violet-500 hover:scale-105 duration-200 text-xs">
-                            <i class="ti ti-arrow-loop-right text-lg"></i>
-                            即刻体验
-                        </div>
-                    </RouterLink>
 
                     <!-- <RouterLink to="/login">
                         <a
