@@ -31,9 +31,7 @@ class login(View):
                 user = User.objects.create(phoneNumber=phone_num, is_admin_or_not=False, user_name=user_name)
                 user.save()
             request.session["user_id"] = user.user_id
-            token = Token.objects.create(user=user)
-            print(f"token:{token.key}")
-            return JsonResponse({"status": "success", "message": "Login successful","token": token.key})
+            return JsonResponse({"status": "success", "message": "Login successful"})
         except Exception as e:
             return JsonResponse({"status": "error", "message": str(e)})
 

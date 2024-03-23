@@ -19,5 +19,7 @@ from User.views import *
 
 urlpatterns = [
     path("admin/", admin.site.urls),
+    path("login/", login.as_view(), name="login"),
+    path("verify_code/", send_verification_code.as_view(), name="verify_code"),
 ]
 

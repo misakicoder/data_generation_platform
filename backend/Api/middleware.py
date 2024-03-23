@@ -5,6 +5,11 @@ from django.contrib.auth.models import AnonymousUser
 from django.http import JsonResponse
 from User import User  # 你的 User 模型的实际导入路径
 
+public_path = [
+    '/login/',
+    '/verify_code/',
+]
+
 _thread_locals = threading.local()
 
 def get_current_user():
@@ -12,21 +17,18 @@ def get_current_user():
 
 class LoginMiddleware(MiddlewareMixin):
     def process_request(self, request):
-        token = request.META.get('HTTP_AUTHORIZATION')
-        if token:
-            user = User.objects.filter(token=token).first()
-            if user:
-                _thread_locals.user = user
-                request.user = user
+        if request.path in public_path:
+            pass
+
+        user_id = request.session.get('user_id')
+        if user_id:
+            user = User.objects.get(user_id=user_id)
+            if user.exists():
+                _thread_locals.user_id = user.user_id
             else:
-                _thread_locals.user = AnonymousUser()
-                request.user = SimpleLazyObject(lambda: get_current_user())
+                return JsonResponse({'error': 'Authentication required'}, status=401)
         else:
-            _thread_locals.user = AnonymousUser()
-            request.user = SimpleLazyObject(lambda: get_current_user())
+            return JsonResponse({'error': 'Authentication required'}, status=401)
 
     def process_response(self, request, response):
-        # 这个方法在视图函数处理请求之后被调用
-        if not request.user.is_authenticated:
-            return JsonResponse({'error': 'Authentication required'}, status=401)
         return response
