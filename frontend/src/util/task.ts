@@ -4,48 +4,30 @@ import { ref } from "vue";
 
 export interface ITask {
   task_id: string;
-  idea: string;
-  movie_type: string;
-  frame_num: number;
-  status: "pending" | "ready" | "error";
-  story: string;
-  scripts: string[];
-  speeches: string[];
-  scenes: string[];
-  videos: string[];
-  music_description_zh: string;
-  music: string;
-  movie: string;
+  task_type: string;
+  task_stated: "pending" | "running" | "ready"| "error";
+  task_name: string;
 }
 
 export const task_list = ref<ITask[]>([]);
 
 export const current_task = ref<ITask>({
   task_id: "",
-  idea: "",
-  movie_type: "",
-  frame_num: 0,
-  status: "ready",
-  story: "",
-  scripts: [],
-  speeches: [],
-  scenes: [],
-  videos: [],
-  music_description_zh: "",
-  music: "",
-  movie: "",
+  task_type: "",
+  task_stated: "ready",
+  task_name: "",
 });
 
 export const update_current_task = () => {
-  current_task.value.status = "pending";
+  current_task.value.task_type = "pending";
 
   const update_current_task_interval = setInterval(() => {
     axios
-      .get("/api/task/", { params: { task_id: current_task.value.task_id } })
+      .get("/Api/task/", { params: { task_id: current_task.value.task_id } })
       .then((res) => {
         Object.assign(current_task.value, res.data);
 
-        if (current_task.value.status === "ready") {
+        if (current_task.value.task_type === "ready") {
           clearInterval(update_current_task_interval);
         }
       });
@@ -54,15 +36,9 @@ export const update_current_task = () => {
 
 export const get_current_task = () => {
   axios
-    .get("/api/task/", { params: { task_id: current_task.value.task_id } })
+    .get("/Api/task/", { params: { task_id: current_task.value.task_id } })
     .then((res) => {
-      Object.assign(current_task.value, res.data);
-
-      // 处理 story
-      let story = res.data.story;
-      story.replace(/\"/g, "");
-      story = story.replace(/\\n/g, "\n");
-      current_task.value.story = story;
+      Object.assign(current_task.value, res.data.task);
     })
     .catch((err) => {
       console.error(err);
@@ -77,9 +53,9 @@ export const get_current_task = () => {
 
 export const get_all_my_tasks = () => {
   axios
-    .get("/api/tasks")
+    .get("/api/tasks/")
     .then((res) => {
-      task_list.value = res.data.tasks_list;
+      task_list.value = res.data.tasks;
     })
     .catch((err) => {
       console.error(err);

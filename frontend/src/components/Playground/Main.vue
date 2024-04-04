@@ -182,10 +182,20 @@ import Data_clean from "@/components/Playground/Data_clean.vue"
 import Data_mark from "@/components/Playground/Data_mark.vue"
 import Data_generate from "@/components/Playground/Data_generate.vue"
 import Data_preprocess from "@/components/Playground/Data_preprocess.vue"
-import IntermediateProcess from "@/components/Playground/IntermediateProcess.vue"
-import Movie from "@/components/Playground/Movie.vue"
-import Music from "@/components/Playground/Music.vue"
+import { onMounted } from "vue";
+import { current_task, get_current_task } from "@/util/task";
 // import SuperMovie from "./SuperMovie.vue";
 import router from "@/router/router";
+
+onMounted(() => {
+    const task_id = router.currentRoute.value.params.task_id as string
+    current_task.value.task_id = task_id
+
+    get_current_task()
+    
+    setInterval(() => {
+        get_current_task()
+    }, 4000)
+})
 
 </script>

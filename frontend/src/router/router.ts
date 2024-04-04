@@ -23,7 +23,7 @@ const routes = [
       component: All,
     },
     {
-      path: "main",
+      path: "main/:id?",
       component: Main,
     },
   ],}

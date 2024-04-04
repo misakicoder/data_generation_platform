@@ -29,7 +29,6 @@ class login(View):
             print(f"user:{user}")
             if user is None:
                 user = User.objects.create(phone_number=phone_num)
-                user.save()
             request.session["user_id"] = user.user_id
             return JsonResponse({"status": "success", "message": "Login successful"})
         except Exception as e:

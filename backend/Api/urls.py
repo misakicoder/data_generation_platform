@@ -16,10 +16,19 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from User.views import *
+from Task.views import *
+from Data.views import *
+from Model.views import *
+from Algorithm.views import *
+
 
 urlpatterns = [
     path("admin/", admin.site.urls),
+    #User
     path("login/", login.as_view(), name="login"),
     path("verify_code/", send_verification_code.as_view(), name="verify_code"),
+    #Task
+    path("tasks/", tasks.as_view(), name="tasks"),
+    path("task/", task.as_view(), name="task"),
 ]
 

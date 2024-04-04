@@ -23,9 +23,7 @@ class LoginMiddleware(MiddlewareMixin):
             user_id = request.session.get('user_id')
             if user_id:
                 user = User.objects.filter(user_id=user_id).first()
-                if user is not None:
-                    _thread_locals.user_id = user.user_id
-                else:
+                if user is None:
                     return JsonResponse({'error': 'Authentication required'}, status=401)
             else:
                 return JsonResponse({'error': 'Authentication required'}, status=401)

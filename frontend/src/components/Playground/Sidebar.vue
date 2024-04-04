@@ -21,10 +21,6 @@
                         </span>
                         <i class="ti ti-chevron-right text-lg"></i>
                     </li>
-                    <li class="text-sm font-semibold text-neutral-800 truncate dark:text-neutral-400"
-                        aria-current="page">
-                        制作影片
-                    </li>
                 </ol>
                 <!-- End Breadcrumb -->
             </div>
@@ -58,12 +54,26 @@
                     <ul class="space-y-1.5">
                         <template v-for="task of task_list.values()">
                             <li>
-                                <RouterLink :to="'/playground/task/' + task.task_id">
+                                
                                     <div
-                                        class="flex items-center gap-x-3.5 py-2 px-2.5 text-sm text-neutral-700 rounded-lg hover:bg-neutral-100 dark:hover:bg-neutral-900 dark:text-white dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-neutral-600 cursor-pointer text-ellipsis">
-                                        {{ task.idea }}
+                                        class="relative flex items-center gap-x-3.5 py-2.5 px-2.5 text-sm text-neutral-700 rounded-lg 
+                                        hover:bg-neutral-100 dark:hover:bg-neutral-900 dark:text-white dark:focus:outline-none 
+                                        dark:focus:ring-1 dark:focus:ring-neutral-600 cursor-pointer text-ellipsis"
+                                        style="word-wrap: break-word;"
+                                        @mouseover="showButton[task.task_id] = true"
+                                        @mouseleave="showButton[task.task_id] = false"
+                                    >
+                                        <RouterLink :to="'/playground/main/' + task.task_id">
+                                            <div>{{ task.task_name }}</div>
+                                        </RouterLink>
+                                        <el-button 
+                                            type="danger" 
+                                            :icon="Delete" circle 
+                                            v-show="showButton[task.task_id]"
+                                            class="absolute top-1/2 right-3 transform -translate-y-1/2" 
+                                            @click.stop="deleteTask(task.task_id)"
+                                            />
                                     </div>
-                                </RouterLink>
                             </li>
                         </template>
                     </ul>
@@ -111,13 +121,31 @@ import { onMounted } from "vue";
 import { get_all_my_tasks, task_list } from '@/util/task';
 import { Clapperboard } from "lucide-vue-next";
 import { useDark, useToggle } from '@vueuse/core'
+import {Delete} from '@element-plus/icons-vue'
+import { ref } from 'vue'
+import axios from "axios";
 
 const isDark = useDark()
 const toggleDark = useToggle(isDark)
 
+const showButton = ref({} as Record<string, boolean>)
+
+
 onMounted(() => {
     get_all_my_tasks()
 })
+
+const deleteTask = (task_id: string) => {
+    axios.delete('/api/task/', {data: {task_id: task_id}}).then(res => {
+        if (res.data.status == 'success') {
+            get_all_my_tasks()
+        } else {
+            alert('删除失败')
+        }
+    }).catch(err => {
+        console.error(err)
+    })
+}
 
 const logout = () => {
     router.push('/')

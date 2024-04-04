@@ -9,74 +9,23 @@
         <div class="grid grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-4  mt-5">
             <!-- Card -->
             
-            <RouterLink to="/playground/main">
+            <div v-for="item in generate_items" :key="item.title" :to="item.link" @click="create_task(item.type)">
                 <div
                     class="group flex flex-col  bg-white border shadow-sm rounded-xl hover:shadow-md transition dark:bg-neutral-900 dark:border-neutral-800 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-neutral-600 cursor-pointer hover:scale-105">
                     <div class="p-4 md:p-5">
                         <div class="flex">
                             <span class="mt-1 flex-shrink-0 w-5 h-5 text-neutral-800 dark:text-neutral-200 text-xl">
-                                <i class="ti ti-vinyl"></i>
+                                <i :class="item.icon"></i>
                             </span>
 
                             <div class="grow ms-5">
                                 <h3 class=" font-semibold text-neutral-800  dark:text-neutral-200">
-                                    负荷数据生成 </h3>
+                                    {{ item.title }} </h3>
                             </div>
                         </div>
                     </div>
                 </div>
-            </RouterLink>
-            <RouterLink to="/playground/main">
-                <div
-                    class="group flex flex-col bg-white border shadow-sm rounded-xl hover:shadow-md transition dark:bg-neutral-900 dark:border-neutral-800 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-neutral-600 cursor-pointer hover:scale-105">
-                    <div class="p-4 md:p-5">
-                        <div class="flex">
-                            <span class="mt-1 flex-shrink-0 w-5 h-5 text-neutral-800 dark:text-neutral-200 text-xl">
-                                <i class="ti ti-vinyl"></i>
-                            </span>
-
-                            <div class="grow ms-5">
-                                <h3 class=" font-semibold text-neutral-800  dark:text-neutral-200">
-                                    天气数据生成 </h3>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </RouterLink>
-            <RouterLink to="/playground/main">
-                <div
-                    class="group flex flex-col bg-white border shadow-sm rounded-xl hover:shadow-md transition dark:bg-neutral-900 dark:border-neutral-800 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-neutral-600 cursor-pointer hover:scale-105">
-                    <div class="p-4 md:p-5">
-                        <div class="flex">
-                            <span class="mt-1 flex-shrink-0 w-5 h-5 text-neutral-800 dark:text-neutral-200 text-xl">
-                                <i class="ti ti-vinyl"></i>
-                            </span>
-
-                            <div class="grow ms-5">
-                                <h3 class=" font-semibold text-neutral-800  dark:text-neutral-200">
-                                    股票数据生成 </h3>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </RouterLink>
-            <RouterLink to="/playground/main">
-                <div
-                    class="group flex flex-col bg-white border shadow-sm rounded-xl hover:shadow-md transition dark:bg-neutral-900 dark:border-neutral-800 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-neutral-600 cursor-pointer hover:scale-105">
-                    <div class="p-4 md:p-5">
-                        <div class="flex">
-                            <span class="mt-1 flex-shrink-0 w-5 h-5 text-neutral-800 dark:text-neutral-200 text-xl">
-                                <i class="ti ti-vinyl"></i>
-                            </span>
-
-                            <div class="grow ms-5">
-                                <h3 class=" font-semibold text-neutral-800  dark:text-neutral-200">
-                                    图片数据生成 </h3>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </RouterLink>
+            </div>
             <!-- End Card -->
         </div>
         <div
@@ -86,58 +35,23 @@
         <!-- Grid -->
         <div class="grid grid-cols-3 lg:grid-cols-3 gap-4 sm:gap-4  mt-5">
             <!-- Card -->
-            
-            <RouterLink to="/playground/main">
-                <div
-                    class="group flex flex-col  bg-white border shadow-sm rounded-xl hover:shadow-md transition dark:bg-neutral-900 dark:border-neutral-800 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-neutral-600 cursor-pointer hover:scale-105">
-                    <div class="p-4 md:p-5">
-                        <div class="flex">
-                            <span class="mt-1 flex-shrink-0 w-5 h-5 text-neutral-800 dark:text-neutral-200 text-xl">
-                                <i class="ti ti-vinyl"></i>
-                            </span>
-
-                            <div class="grow ms-5">
-                                <h3 class=" font-semibold text-neutral-800  dark:text-neutral-200">
-                                    负荷数据预测 </h3>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </RouterLink>
-            <RouterLink to="/playground/main">
+            <div v-for="item in predict_items" :key="item.title" :to="item.link" @click="create_task(item.type)" >
                 <div
                     class="group flex flex-col bg-white border shadow-sm rounded-xl hover:shadow-md transition dark:bg-neutral-900 dark:border-neutral-800 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-neutral-600 cursor-pointer hover:scale-105">
                     <div class="p-4 md:p-5">
                         <div class="flex">
                             <span class="mt-1 flex-shrink-0 w-5 h-5 text-neutral-800 dark:text-neutral-200 text-xl">
-                                <i class="ti ti-vinyl"></i>
+                                <i :class="item.icon"></i>
                             </span>
 
                             <div class="grow ms-5">
                                 <h3 class=" font-semibold text-neutral-800  dark:text-neutral-200">
-                                    天气数据预测 </h3>
+                                    {{ item.title }} </h3>
                             </div>
                         </div>
                     </div>
                 </div>
-            </RouterLink>
-            <RouterLink to="/playground/main">
-                <div
-                    class="group flex flex-col bg-white border shadow-sm rounded-xl hover:shadow-md transition dark:bg-neutral-900 dark:border-neutral-800 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-neutral-600 cursor-pointer hover:scale-105">
-                    <div class="p-4 md:p-5">
-                        <div class="flex">
-                            <span class="mt-1 flex-shrink-0 w-5 h-5 text-neutral-800 dark:text-neutral-200 text-xl">
-                                <i class="ti ti-vinyl"></i>
-                            </span>
-
-                            <div class="grow ms-5">
-                                <h3 class=" font-semibold text-neutral-800  dark:text-neutral-200">
-                                    股票数据预测 </h3>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </RouterLink>
+            </div>
             <!-- End Card -->
         </div>
         <!-- End Grid -->
@@ -149,6 +63,74 @@
 </template>
 
 <script lang="ts" setup>
+import { ref } from 'vue'
+import axios from 'axios';
+import { current_task } from '@/util/task';
+import { useRouter } from 'vue-router';
+
+const router = useRouter();
+
+const generate_items = ref([
+    {
+        title: '负荷数据生成',
+        icon: 'ti ti-vinyl',
+        link: '/playground/main',
+        type: 'load_generate'
+    },
+    {
+        title: '天气数据生成',
+        icon: 'ti ti-vinyl',
+        link: '/playground/main',
+        type: 'weather_generate'
+    },
+    {
+        title: '股票数据生成',
+        icon: 'ti ti-vinyl',
+        link: '/playground/main',
+        type: 'stock_generate'
+    },
+    {
+        title: '图片数据生成',
+        icon: 'ti ti-vinyl',
+        link: '/playground/main',
+        type: 'image_generate'
+    }
+])
+
+const predict_items = ref([
+    {
+        title: '负荷数据预测',
+        icon: 'ti ti-vinyl',
+        link: '/playground/main',
+        type: 'load_predict'
+    },
+    {
+        title: '天气数据预测',
+        icon: 'ti ti-vinyl',
+        link: '/playground/main',
+        type: 'weather_predict'
+    },
+    {
+        title: '股票数据预测',
+        icon: 'ti ti-vinyl',
+        link: '/playground/main',
+        type: 'stock_predict'
+    }
+])
+
+const create_task = (task_type:string) => {
+    axios.post('/api/task/', {task_type: task_type}).then(res => {
+        if (res.data.status == 'success') {
+            Object.assign(current_task.value, res.data.task);
+            console.log('create task success');
+            router.push('/playground/main/' + current_task.value.task_id);
+        } else {
+            console.log('create task failed');
+        }
+    }).catch(err => {
+        console.error(err);
+    })
+}
 
 </script>
 
