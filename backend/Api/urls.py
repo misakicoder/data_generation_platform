@@ -30,5 +30,7 @@ urlpatterns = [
     #Task
     path("tasks/", tasks.as_view(), name="tasks"),
     path("task/", task.as_view(), name="task"),
+    #Data
+    path("data/", data.as_view(), name="data"),
 ]
 

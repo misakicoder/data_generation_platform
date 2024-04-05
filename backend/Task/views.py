@@ -27,6 +27,18 @@ class tasks(View):
 
 
 class task(View):
+    def get (self, request):
+        try:
+            task_id = request.GET.get("task_id")
+            user_id = request.session.get("user_id")
+            if user_id is None:
+                return JsonResponse({"status": "error", "message": "Authentication required"}, status=401)
+            task = Task.objects.get(task_id=task_id, user_id=user_id)
+            return JsonResponse({"status": "success", "message": "Task get successful","task":model_to_dict(task)})
+        except Exception as e:
+            logger.error(f"error:{e}")
+            return JsonResponse({"status": "error", "message": str(e)})
+
     def post(self, request):
         kwargs: dict = json.loads(request.body)
         try:

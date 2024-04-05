@@ -23,7 +23,7 @@ export const update_current_task = () => {
 
   const update_current_task_interval = setInterval(() => {
     axios
-      .get("/Api/task/", { params: { task_id: current_task.value.task_id } })
+      .get("/api/task/", { params: { task_id: current_task.value.task_id } })
       .then((res) => {
         Object.assign(current_task.value, res.data);
 
@@ -36,7 +36,7 @@ export const update_current_task = () => {
 
 export const get_current_task = () => {
   axios
-    .get("/Api/task/", { params: { task_id: current_task.value.task_id } })
+    .get("/api/task/", { params: { task_id: current_task.value.task_id } })
     .then((res) => {
       Object.assign(current_task.value, res.data.task);
     })
