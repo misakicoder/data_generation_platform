@@ -50,7 +50,7 @@
                 </div>
             </div>
 
-            <div class="hs-accordion active" id="hs-basic-always-open-heading-three" v-if="true">
+            <div class="hs-accordion active" id="hs-basic-always-open-heading-three" v-if="data_manage.data_clean">
                 <button
                     class="hs-accordion-toggle hs-accordion-active:text-violet-500 py-3 inline-flex items-center gap-x-3 w-full font-semibold text-start text-neutral-800 hover:text-neutral-500 rounded-lg disabled:opacity-50 disabled:pointer-events-none dark:hs-accordion-active:text-violet-400 dark:text-neutral-200 dark:hover:text-neutral-400 outline-none dark:focus:text-neutral-400 text-lg"
                     aria-controls="hs-basic-always-open-collapse-three">
@@ -75,7 +75,7 @@
                 </div>
             </div>
 
-            <div class="hs-accordion active" id="hs-basic-always-open-heading-four">
+            <div class="hs-accordion active" id="hs-basic-always-open-heading-four" v-if="data_manage.data_mark">
                 <button
                     class="hs-accordion-toggle hs-accordion-active:text-violet-500 py-3 inline-flex items-center gap-x-3 w-full font-semibold text-start text-neutral-800 hover:text-neutral-500 rounded-lg disabled:opacity-50 disabled:pointer-events-none dark:hs-accordion-active:text-violet-400 dark:text-neutral-200 dark:hover:text-neutral-400 outline-none dark:focus:text-neutral-400 text-lg"
                     aria-controls="hs-basic-always-open-collapse-four">
@@ -99,7 +99,7 @@
                 </div>
             </div>
 
-            <div class="hs-accordion active" id="hs-basic-always-open-heading-four">
+            <div class="hs-accordion active" id="hs-basic-always-open-heading-four" v-if="data_manage.data_preprocess">
                 <button
                     class="hs-accordion-toggle hs-accordion-active:text-violet-500 py-3 inline-flex items-center gap-x-3 w-full font-semibold text-start text-neutral-800 hover:text-neutral-500 rounded-lg disabled:opacity-50 disabled:pointer-events-none dark:hs-accordion-active:text-violet-400 dark:text-neutral-200 dark:hover:text-neutral-400 outline-none dark:focus:text-neutral-400 text-lg"
                     aria-controls="hs-basic-always-open-collapse-four">
@@ -124,7 +124,7 @@
                 </div>
             </div>
 
-            <div class="hs-accordion active" id="hs-basic-always-open-heading-four">
+            <div class="hs-accordion active" id="hs-basic-always-open-heading-four" v-if="data_manage.data_generate">
                 <button
                     class="hs-accordion-toggle hs-accordion-active:text-violet-500 py-3 inline-flex items-center gap-x-3 w-full font-semibold text-start text-neutral-800 hover:text-neutral-500 rounded-lg disabled:opacity-50 disabled:pointer-events-none dark:hs-accordion-active:text-violet-400 dark:text-neutral-200 dark:hover:text-neutral-400 outline-none dark:focus:text-neutral-400 text-lg"
                     aria-controls="hs-basic-always-open-collapse-four">
@@ -159,19 +159,14 @@ import Data_clean from "@/components/Playground/Data_clean.vue"
 import Data_mark from "@/components/Playground/Data_mark.vue"
 import Data_generate from "@/components/Playground/Data_generate.vue"
 import Data_preprocess from "@/components/Playground/Data_preprocess.vue"
-import { onMounted } from "vue";
-import { current_task, get_current_task } from "@/util/task";
+import { onMounted, watch } from "vue";
+import { current_task, get_current_task,data_manage } from "@/util/task";
 // import SuperMovie from "./SuperMovie.vue";
 import router from "@/router/router";
+import { ref } from "vue";
 
-onMounted(() => {
-    const task_id = router.currentRoute.value.params.id as string
-    current_task.value.task_id = task_id
-    get_current_task()
-    
-    setInterval(() => {
-        get_current_task()
-    }, 4000)
-})
+
+
+
 
 </script>

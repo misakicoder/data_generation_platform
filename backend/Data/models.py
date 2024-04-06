@@ -10,6 +10,6 @@ class Data(models.Model):
     cleaned_data_url = models.CharField(max_length=1000,default='')
     marked_data_url = models.CharField(max_length=1000,default='')
     preprocessed_data_url = models.CharField(max_length=1000,default='')
-    data_description = models.CharField(max_length=1000,blank=False,default='')
-    task_id = models.ForeignKey(Task, on_delete=models.CASCADE)
+    marked_preprocessed_data_url = models.CharField(max_length=1000,default='')
+    data_description = models.CharField(max_length=1000,blank=False,default='',unique=True)
     user_id = models.ForeignKey(User, on_delete=models.CASCADE)

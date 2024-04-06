@@ -1,28 +1,36 @@
 <!-- 剧本 -->
 
 <template>
-    <div class="flex gap-4">
+    <div style="margin-top:10px;">
+        <label for="hs-select-label" class="block text-sm font-medium mb-2 dark:text-white">请选择你要清洗的数据</label>
+        <select id="hs-select-label" class="py-3 px-4 pe-9 block w-4/5 border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-slate-900 dark:border-gray-700 dark:text-gray-400 dark:focus:ring-gray-600"
+            @click="selectData">
+            <option selected>原始数据列表</option>
+            <option v-for="data in ori_datas">{{ data.data_description + data.data_id}}</option>
+        </select>
+    </div>
+    <div class="flex gap-4 mt-4">
         <button type="button" 
             class="py-3 px-4 inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent bg-teal-100 text-teal-800 hover:bg-teal-200 disabled:opacity-50 disabled:pointer-events-none dark:hover:bg-teal-900 dark:text-teal-500 dark:hover:text-teal-400 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600"
             @click="start_clean">
             开始清洗
         </button>
     </div>
-    <div
+    <!-- <div
             class="py-3 flex items-center text-sm text-neutral-800 before:flex-[1_1_0%] before:border-t before:border-neutral-200 before:me-6 after:flex-[1_1_0%] after:border-t after:border-neutral-200 after:ms-6 dark:text-white dark:before:border-neutral-600 dark:after:border-neutral-600">
             清洗前数据
-    </div>
-    <el-table :data="tableData" style="width: 100%">
+    </div> -->
+    <!-- <el-table :data="tableData" style="width: 100%">
         <el-table-column v-for="(value, key) in tableData[0]" :key="key" :prop="key" :label="key" width="180" />
-    </el-table>
-    <div class="py-3 flex items-center text-sm text-neutral-800 before:flex-[1_1_0%] before:border-t before:border-neutral-200 before:me-6 after:flex-[1_1_0%] after:border-t after:border-neutral-200 after:ms-6 dark:text-white dark:before:border-neutral-600 dark:after:border-neutral-600"
+    </el-table> -->
+    <!-- <div class="py-3 flex items-center text-sm text-neutral-800 before:flex-[1_1_0%] before:border-t before:border-neutral-200 before:me-6 after:flex-[1_1_0%] after:border-t after:border-neutral-200 after:ms-6 dark:text-white dark:before:border-neutral-600 dark:after:border-neutral-600"
         v-if="cleaned_or_not">
             
             清洗后数据
     </div >
     <el-table :data="tableData" style="width: 100%" v-if="cleaned_or_not">
         <el-table-column v-for="(value, key) in tableData[0]" :key="key" :prop="key" :label="key" width="180" />
-    </el-table>
+    </el-table> -->
 </template>
     
 <script lang="ts" setup>
@@ -32,28 +40,13 @@ import axios from 'axios';
 import { onMounted,ref } from 'vue';
 const cleaned_or_not = ref(false)
 
-const tableData = [
-    {
-        date: '2016-05-03',
-        name: 'Tom',
-        address: 'No. 189, Grove St, Los Angeles',
-    },
-    {
-        date: '2016-05-02',
-        name: 'Tom',
-        address: 'No. 189, Grove St, Los Angeles',
-    },
-    {
-        date: '2016-05-04',
-        name: 'Tom',
-        address: 'No. 189, Grove St, Los Angeles',
-    },
-    {
-        date: '2016-05-01',
-        name: 'Tom',
-        address: 'No. 189, Grove St, Los Angeles',
-    },
-]
+const ori_datas = ref<Array<{[key: string]: any}>>([])
+
+const selectData = () => {
+    axios.get('/api/ori_data/').then(res => {
+        Object.assign(ori_datas.value, res.data.ori_datas)
+    })
+}
 
 const start_clean = () => {
     alert("点击了")

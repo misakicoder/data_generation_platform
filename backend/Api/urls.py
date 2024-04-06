@@ -30,7 +30,17 @@ urlpatterns = [
     #Task
     path("tasks/", tasks.as_view(), name="tasks"),
     path("task/", task.as_view(), name="task"),
+    path("data_manager/",data_manager.as_view(), name="data_manager"),
     #Data
     path("data/", data.as_view(), name="data"),
+    path("ori_data/", ori_data.as_view(), name="ori_data"),
+    path("cleaned_data/", cleaned_data.as_view(), name="cleaned_data"),
+    path("marked_data/", marked_data.as_view(), name="marked_data"),
+    path("preprocessed_data/", preprocessed_data.as_view(), name="preprocessed_data"),
+    path("marked_preprocessed_data/", marked_preprocessed_data.as_view(), name="marked_preprocessed_data"),
+    #Algorithm
+    path("algorithms/", algorithms.as_view(), name="algorithms"),
+    #Model
+    path("models/", models.as_view(), name="models"),
 ]
 

@@ -1,14 +1,31 @@
 <!-- 剧本 -->
 
 <template>
-    <div class="flex gap-4">
+
+    <div style="margin-top:10px;" v-if = "!data_manage.data_mark">
+        <label for="hs-select-label" class="block text-sm font-medium mb-2 dark:text-white">请选择你要预处理的数据</label>
+        <select id="hs-select-label" class="py-3 px-4 pe-9 block w-4/5 border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-slate-900 dark:border-gray-700 dark:text-gray-400 dark:focus:ring-gray-600"
+            @click="select_cleanedData">
+            <option selected>已清理数据列表</option>
+            <option v-for="data in cleaned_datas">{{ data.data_description + data.data_id}}</option>
+        </select>
+    </div>
+    <div style="margin-top:10px;" v-else>
+        <label for="hs-select-label" class="block text-sm font-medium mb-2 dark:text-white">请选择你要预处理的数据</label>
+        <select id="hs-select-label" class="py-3 px-4 pe-9 block w-4/5 border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-slate-900 dark:border-gray-700 dark:text-gray-400 dark:focus:ring-gray-600"
+            @click="select_markedData">
+            <option selected>已标记数据列表</option>
+            <option v-for="data in marked_datas">{{ data.data_description + data.data_id}}</option>
+        </select>
+    </div>
+    <div class="flex gap-4 mt-4">
         <button type="button" 
-            class="py-3 px-4 inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent bg-blue-200 text-blue-800 hover:bg-blue-300 disabled:opacity-50 disabled:pointer-events-none dark:hover:bg-blue-900 dark:text-blue-500 dark:hover:text-blue-400 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600"
-            @click="start_clean">
-        开始预处理
+            class="py-3 px-4 inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent bg-teal-100 text-teal-800 hover:bg-teal-200 disabled:opacity-50 disabled:pointer-events-none dark:hover:bg-teal-900 dark:text-teal-500 dark:hover:text-teal-400 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600"
+            @click="start_preprocess">
+            开始预处理
         </button>
     </div>
-    <div
+    <!-- <div
             class="py-3 flex items-center text-sm text-neutral-800 before:flex-[1_1_0%] before:border-t before:border-neutral-200 before:me-6 after:flex-[1_1_0%] after:border-t after:border-neutral-200 after:ms-6 dark:text-white dark:before:border-neutral-600 dark:after:border-neutral-600"
             >
             执行的预处理过程
@@ -29,43 +46,35 @@
 
             </div>
         </div>
-    </div>
+    </div> -->
 
 </template>
     
 <script lang="ts" setup>
 import { UploadFilled } from '@element-plus/icons-vue'
-import { current_task, update_current_task } from '@/util/task';
+import { current_task, update_current_task,data_manage } from '@/util/task';
 import axios from 'axios';
 import { onMounted,ref } from 'vue';
-const cleaned_or_not = ref(false)
+const preprocess_or_not = ref(false)
 
-const tableData = [
-    {
-        date: '2016-05-03',
-        name: 'Tom',
-        address: 'No. 189, Grove St, Los Angeles',
-    },
-    {
-        date: '2016-05-02',
-        name: 'Tom',
-        address: 'No. 189, Grove St, Los Angeles',
-    },
-    {
-        date: '2016-05-04',
-        name: 'Tom',
-        address: 'No. 189, Grove St, Los Angeles',
-    },
-    {
-        date: '2016-05-01',
-        name: 'Tom',
-        address: 'No. 189, Grove St, Los Angeles',
-    },
-]
+const cleaned_datas = ref<Array<{[key: string]: any}>>([])
+const marked_datas = ref<Array<{[key: string]: any}>>([])
 
-const start_clean = () => {
+const select_cleanedData = () => {
+    axios.get('/api/cleaned_data/').then(res => {
+        Object.assign(cleaned_datas.value, res.data.cleaned_datas)
+    })
+}
+
+const select_markedData = () => {
+    axios.get('/api/marked_data/').then(res => {
+        Object.assign(marked_datas.value, res.data.marked_datas)
+    })
+}
+
+const start_preprocess = () => {
     alert("点击了")
-    cleaned_or_not.value = !cleaned_or_not.value
+    preprocess_or_not.value = !preprocess_or_not.value
 }
 // onMounted(() => {
 //     setTimeout(() => {

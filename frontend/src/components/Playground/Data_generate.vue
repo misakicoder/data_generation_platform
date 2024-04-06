@@ -3,16 +3,26 @@
 <template>
     <div style="margin-top:10px;">
         <label for="hs-select-label" class="block text-sm font-medium mb-2 dark:text-white">请选择你的模型</label>
-        <select id="hs-select-label" class="py-3 px-4 pe-9 block w-4/5 border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-slate-900 dark:border-gray-700 dark:text-gray-400 dark:focus:ring-gray-600">
+        <select id="hs-select-label" class="py-3 px-4 pe-9 block w-4/5 border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-slate-900 dark:border-gray-700 dark:text-gray-400 dark:focus:ring-gray-600"
+        @click="selectModels">
             <option selected>模型列表</option>
-            <option v-for="data in tableData">{{ data.date }}</option>
+            <option v-for="data in models">{{ data.model_description }}</option>
         </select>
     </div>
-    <div style="margin-top:10px;">
-        <label for="hs-select-label" class="block text-sm font-medium mb-2 dark:text-white">请选择你的数据</label>
-        <select id="hs-select-label" class="py-3 px-4 pe-9 block w-4/5 border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-slate-900 dark:border-gray-700 dark:text-gray-400 dark:focus:ring-gray-600">
-            <option selected>数据列表</option>
-            <option v-for="data in tableData">{{ data.date }}</option>
+    <div style="margin-top:10px;" v-if="!data_manage.data_mark">
+        <label for="hs-select-label" class="block text-sm font-medium mb-2 dark:text-white">请选择你要生成的数据</label>
+        <select id="hs-select-label" class="py-3 px-4 pe-9 block w-4/5 border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-slate-900 dark:border-gray-700 dark:text-gray-400 dark:focus:ring-gray-600"
+            @click="selectPreprocessedData">
+            <option selected>预处理数据列表</option>
+            <option v-for="data in preprocessed_datas">{{ data.data_description + data.data_id}}</option>
+        </select>
+    </div>
+    <div style="margin-top:10px;" v-else>
+        <label for="hs-select-label" class="block text-sm font-medium mb-2 dark:text-white">请选择你要生成的数据</label>
+        <select id="hs-select-label" class="py-3 px-4 pe-9 block w-4/5 border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-slate-900 dark:border-gray-700 dark:text-gray-400 dark:focus:ring-gray-600"
+            @click="selectMarkedPreprocessedData">
+            <option selected>标记的预处理数据列表</option>
+            <option v-for="data in marked_processed_datas">{{ data.data_description + data.data_id}}</option>
         </select>
     </div>
     <div style="margin-top:10px;">
@@ -26,11 +36,31 @@
     
 <script lang="ts" setup>
 import { UploadFilled } from '@element-plus/icons-vue'
-import { current_task, update_current_task } from '@/util/task';
+import { current_task, update_current_task,data_manage } from '@/util/task';
 import axios from 'axios';
 import { onMounted,ref } from 'vue';
 const cleaned_or_not = ref(false)
+const preprocessed_datas = ref<Array<{[key: string]: any}>>([])
+const marked_processed_datas = ref<Array<{[key: string]: any}>>([])
+const models = ref<Array<{[key: string]: any}>>([])
 
+const selectPreprocessedData = () => {
+    axios.get('/api/preprocessed_data/').then(res => {
+        Object.assign(preprocessed_datas.value, res.data.preprocessed_datas)
+    })
+}
+
+const selectMarkedPreprocessedData = () => {
+    axios.get('/api/marked_preprocessed_data/').then(res => {
+        Object.assign(marked_processed_datas.value, res.data.marked_preprocessed_datas)
+    })
+}
+
+const selectModels = () => {
+    axios.get('/api/models/',{ params: { task_id : current_task.value.task_id} }).then(res => {
+        Object.assign(models.value, res.data.models)
+    })
+}
 const tableData = [
     {
         date: '2016-05-03',

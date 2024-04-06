@@ -5,6 +5,7 @@ class Algorithm(models.Model):
     algorithm_id = models.BigAutoField(primary_key=True)
     algorithm_name = models.CharField(max_length=100,blank=False)
     algorithm_description = models.CharField(max_length=10000,blank=False)
+    need_mark = models.BooleanField(default=False)
     task_type = models.CharField(max_length=100,blank=False)
 
 

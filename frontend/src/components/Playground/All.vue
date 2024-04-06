@@ -65,7 +65,7 @@
 <script lang="ts" setup>
 import { ref } from 'vue'
 import axios from 'axios';
-import { current_task } from '@/util/task';
+import { current_task,data_manage,get_all_my_tasks } from '@/util/task';
 import { useRouter } from 'vue-router';
 
 const router = useRouter();
@@ -122,12 +122,16 @@ const create_task = (task_type:string) => {
     axios.post('/api/task/', {task_type: task_type}).then(res => {
         if (res.data.status == 'success') {
             Object.assign(current_task.value, res.data.task);
+            Object.assign(data_manage.value, res.data.data_manage);
             console.log('create task success');
             router.push('/playground/main/' + current_task.value.task_id);
         } else {
             console.log('create task failed');
         }
-    }).catch(err => {
+    }).then(() => {
+        get_all_my_tasks()
+    })
+    .catch(err => {
         console.error(err);
     })
 }
