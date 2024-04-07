@@ -4,12 +4,12 @@
     <div style="margin-top:10px;">
         <label for="hs-select-label" class="block text-sm font-medium mb-2 dark:text-white">请选择你要清洗的数据</label>
         <select id="hs-select-label" class="py-3 px-4 pe-9 block w-4/5 border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-slate-900 dark:border-gray-700 dark:text-gray-400 dark:focus:ring-gray-600"
-            @click="selectData">
-            <option selected>原始数据列表</option>
-            <option v-for="data in ori_datas">{{ data.data_description + data.data_id}}</option>
+            @click="selectData" v-model="selected_ori_data">
+            <option value="" disabled selected>原始数据列表</option>
+            <option v-for="data in ori_datas" :value="data">{{ data.data_type + " : "+data.data_description}}</option>
         </select>
     </div>
-    <div class="flex gap-4 mt-4">
+    <div class="flex gap-4 mt-4" v-if="selected_ori_data">
         <button type="button" 
             class="py-3 px-4 inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent bg-teal-100 text-teal-800 hover:bg-teal-200 disabled:opacity-50 disabled:pointer-events-none dark:hover:bg-teal-900 dark:text-teal-500 dark:hover:text-teal-400 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600"
             @click="start_clean">
@@ -38,18 +38,25 @@ import { UploadFilled } from '@element-plus/icons-vue'
 import { current_task, update_current_task } from '@/util/task';
 import axios from 'axios';
 import { onMounted,ref } from 'vue';
+import { pa } from 'element-plus/es/locale';
 const cleaned_or_not = ref(false)
 
 const ori_datas = ref<Array<{[key: string]: any}>>([])
+const selected_ori_data = ref('')
 
 const selectData = () => {
-    axios.get('/api/ori_data/').then(res => {
+    axios.get('/api/ori_data/',{ params: { task_type: current_task.value.task_type }}).then(res => {
+        if(res.data.ori_datas.length == 0){
+            ori_datas.value = []
+            alert("没有原始数据,请先上传数据")
+        }
         Object.assign(ori_datas.value, res.data.ori_datas)
     })
 }
 
 const start_clean = () => {
     alert("点击了")
+    alert(selected_ori_data.value.data_type)
     cleaned_or_not.value = !cleaned_or_not.value
 }
 // onMounted(() => {

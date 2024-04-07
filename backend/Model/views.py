@@ -16,8 +16,9 @@ class models(View):
             if user_id is None:
                 return JsonResponse({"status": "error", "message": "Authentication required"}, status=401)
             task_id = request.GET.get("task_id")
+            data_type = request.GET.get("data_type")
             task = Task.objects.get(task_id=task_id)
-            models = Model.objects.filter(task_type=task.task_type,algorithm_name=task.task_algorithm).values()
+            models = Model.objects.filter(task_type=task.task_type,algorithm_name=task.task_algorithm,data_type=data_type).values()
             return JsonResponse({"status": "success", "message": "Get model list successful", "models": list(models)})
         except Exception as e:
             logger.error(f"error:{e}")

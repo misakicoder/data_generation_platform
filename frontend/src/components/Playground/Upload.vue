@@ -20,7 +20,12 @@
             上传到服务器
         </el-button>
         <div style="margin-top:10px;">
-        <input v-model="data_description" id="input-email-label" class="py-3 px-4 block w-4/5 border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-slate-900 dark:border-gray-700 dark:text-gray-400 dark:focus:ring-gray-600" placeholder="请输入数据相关描述">
+          <input v-model="data_description" id="input-email-label" class="py-3 px-4 block w-4/5 border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-slate-900 dark:border-gray-700 dark:text-gray-400 dark:focus:ring-gray-600 mb-4" placeholder="请输入数据相关描述">
+          <select id="hs-select-label" class="py-3 px-4 pe-9 block w-4/5 border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-slate-900 dark:border-gray-700 dark:text-gray-400 dark:focus:ring-gray-600"
+              @click="selectDataType" v-model="selectedDataType">
+              <option value="" disabled selected>请选择数据类型</option>
+              <option v-for="data in selected_data_types" :value="data">{{ data }}</option>
+          </select>
         </div>
         <template #tip>
         <div class="el-upload__tip text-red">
@@ -46,7 +51,21 @@ import { json } from 'stream/consumers';
 
 const raw_file = ref<UploadRawFile>()
 const data_description = ref('')
+const selectedDataType = ref('')
 const upload = ref<UploadInstance>()
+const selected_data_types = ref<string[]>([])
+interface DataTypes {
+  [key: string]: string[];
+}
+const data_types: DataTypes = {
+  "load_generate": ["96点数据","24点数据"],
+  "weather_generate":["天气数据"],
+}
+
+const selectDataType = () => {
+  selected_data_types.value = data_types[current_task.value.task_type]
+}
+
 const handleExceed: UploadProps['onExceed'] = (files) => {
   upload.value!.clearFiles()
   const file = files[0] as UploadRawFile
@@ -55,12 +74,14 @@ const handleExceed: UploadProps['onExceed'] = (files) => {
 }
 
 
+
 const jsonData = computed(() => {
   return {
     body: JSON.stringify({
       data_description: data_description.value,
       task_id: current_task.value.task_id,
-      data_type: current_task.value.task_type
+      data_type: selectedDataType.value,
+      task_type: current_task.value.task_type,
   })
   };
 });
@@ -81,6 +102,10 @@ const selectFile : UploadProps['onChange'] =  (uploadFile) => {
 const submitUpload = () => {
   if (data_description.value === '') {
     alert('请输入数据相关描述')
+    return
+  }
+  if (selectedDataType.value === '') {
+    alert('请选择数据类型')
     return
   }
   if (raw_file.value === undefined) {

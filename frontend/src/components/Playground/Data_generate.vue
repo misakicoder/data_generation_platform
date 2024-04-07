@@ -1,31 +1,31 @@
 <!-- 剧本 -->
 
 <template>
-    <div style="margin-top:10px;">
-        <label for="hs-select-label" class="block text-sm font-medium mb-2 dark:text-white">请选择你的模型</label>
-        <select id="hs-select-label" class="py-3 px-4 pe-9 block w-4/5 border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-slate-900 dark:border-gray-700 dark:text-gray-400 dark:focus:ring-gray-600"
-        @click="selectModels">
-            <option selected>模型列表</option>
-            <option v-for="data in models">{{ data.model_description }}</option>
-        </select>
-    </div>
     <div style="margin-top:10px;" v-if="!data_manage.data_mark">
         <label for="hs-select-label" class="block text-sm font-medium mb-2 dark:text-white">请选择你要生成的数据</label>
         <select id="hs-select-label" class="py-3 px-4 pe-9 block w-4/5 border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-slate-900 dark:border-gray-700 dark:text-gray-400 dark:focus:ring-gray-600"
-            @click="selectPreprocessedData">
-            <option selected>预处理数据列表</option>
-            <option v-for="data in preprocessed_datas">{{ data.data_description + data.data_id}}</option>
+            @click="selectPreprocessedData" v-model="selected_preprocessed_data">
+            <option value="" disabled selected>预处理数据列表</option>
+            <option v-for="data in preprocessed_datas" :value="data">{{ data.data_type + " : "+data.data_description}}</option>
         </select>
     </div>
     <div style="margin-top:10px;" v-else>
         <label for="hs-select-label" class="block text-sm font-medium mb-2 dark:text-white">请选择你要生成的数据</label>
         <select id="hs-select-label" class="py-3 px-4 pe-9 block w-4/5 border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-slate-900 dark:border-gray-700 dark:text-gray-400 dark:focus:ring-gray-600"
-            @click="selectMarkedPreprocessedData">
-            <option selected>标记的预处理数据列表</option>
-            <option v-for="data in marked_processed_datas">{{ data.data_description + data.data_id}}</option>
+            @click="selectMarkedPreprocessedData" v-model="selected_preprocessed_data">
+            <option value="" disabled selected>标记的预处理数据列表</option>
+            <option v-for="data in marked_processed_datas" :value="data" >{{ data.data_type + " : "+data.data_description}}</option>
         </select>
     </div>
-    <div style="margin-top:10px;">
+    <div style="margin-top:10px;" v-if="selected_preprocessed_data">
+        <label for="hs-select-label" class="block text-sm font-medium mb-2 dark:text-white">请选择你的模型</label>
+        <select id="hs-select-label" class="py-3 px-4 pe-9 block w-4/5 border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-slate-900 dark:border-gray-700 dark:text-gray-400 dark:focus:ring-gray-600"
+        @click="selectModels"v-model="selected_model" >
+            <option value="" disabled selected>模型列表</option>
+            <option v-for="data in models" :value="data">{{ data.model_description }}</option>
+        </select>
+    </div>
+    <div style="margin-top:10px;" v-if="selected_model">
         <button type="button" 
                 class="py-3 px-4 inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent bg-blue-100 text-blue-800 hover:bg-blue-200 disabled:opacity-50 disabled:pointer-events-none dark:hover:bg-blue-800 dark:text-green-500 dark:hover:text-green-400 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600"
                 @click="start_clean">
@@ -43,93 +43,39 @@ const cleaned_or_not = ref(false)
 const preprocessed_datas = ref<Array<{[key: string]: any}>>([])
 const marked_processed_datas = ref<Array<{[key: string]: any}>>([])
 const models = ref<Array<{[key: string]: any}>>([])
+const selected_preprocessed_data = ref('')
+const selected_model = ref('')
 
 const selectPreprocessedData = () => {
-    axios.get('/api/preprocessed_data/').then(res => {
+    axios.get('/api/preprocessed_data/',{ params: { task_type: current_task.value.task_type }}).then(res => {
+        if(res.data.preprocessed_datas.length == 0){
+            preprocessed_datas.value = []
+            alert("没有预处理过数据,请先预处理数据")
+        }
         Object.assign(preprocessed_datas.value, res.data.preprocessed_datas)
     })
 }
 
 const selectMarkedPreprocessedData = () => {
-    axios.get('/api/marked_preprocessed_data/').then(res => {
+    axios.get('/api/marked_preprocessed_data/',{ params: { task_type: current_task.value.task_type }}).then(res => {
+        if(res.data.marked_preprocessed_datas.length == 0){
+            marked_processed_datas.value = []
+            alert("没有预处理过数据,请先预处理数据")
+        }
         Object.assign(marked_processed_datas.value, res.data.marked_preprocessed_datas)
     })
 }
 
 const selectModels = () => {
-    axios.get('/api/models/',{ params: { task_id : current_task.value.task_id} }).then(res => {
+    axios.get('/api/models/',{ params: { task_id : current_task.value.task_id, data_type:selected_preprocessed_data.value.data_type} }).then(res => {
         Object.assign(models.value, res.data.models)
     })
 }
-const tableData = [
-    {
-        date: '2016-05-03',
-        name: 'Tom',
-        address: 'No. 189, Grove St, Los Angeles',
-    },
-    {
-        date: '2016-05-02',
-        name: 'Tom',
-        address: 'No. 189, Grove St, Los Angeles',
-    },
-    {
-        date: '2016-05-04',
-        name: 'Tom',
-        address: 'No. 189, Grove St, Los Angeles',
-    },
-    {
-        date: '2016-05-01',
-        name: 'Tom',
-        address: 'No. 189, Grove St, Los Angeles',
-    },
-]
 
 const start_clean = () => {
     alert("点击了")
     cleaned_or_not.value = !cleaned_or_not.value
 }
-// onMounted(() => {
-//     setTimeout(() => {
-//         get_story()
-//     }, 100);
-// })
-
-// const generate_scripts = () => {
-//     current_task.value.status = 'pending'
-//     axios.put('/api/scripts/', { task_id: current_task.value.task_id }).then(_res => {
-//         update_current_task()
-//     })
-// }
-
-// const get_story = () => {
-//     current_task.value.status = 'pending'
-//     axios.get('/api/story/', { params: { task_id: current_task.value.task_id } }).then(res => {
-//         let story = res.data.story
-//         story.replace(/\"/g, '')
-//         story = story.replace(/\\n/g, '\n')
-//         current_task.value.story = story
-
-//         if (current_task.value.story == "") {
-//             regenerate_story()
-//         }
-//         else {
-//             current_task.value.status = 'ready'
-//         }
-//     })
-// }
-
-// const regenerate_story = () => {
-//     current_task.value.story = ""
-//     axios.put('/api/story/', { task_id: current_task.value.task_id }).then(_res => {
-//         update_current_task()
-//     })
-// }
-
-// const modify_story = () => {
-//     axios.post('/api/story/', { task_id: current_task.value.task_id, story: current_task.value.story }).then(_res => {
-//         get_story()
-//     })
-// }
 </script>
 
 <style scoped>
