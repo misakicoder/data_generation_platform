@@ -9,6 +9,7 @@ class Task(models.Model):
     task_algorithm = models.CharField(max_length=100,blank=False,default='')
     task_state = models.CharField(max_length=100,blank=False)
     user_id = models.ForeignKey(User, on_delete=models.CASCADE)
+    result_id = models.IntegerField(default=0)
 
 class DataManager(models.Model):
     data_clean = models.BooleanField(default=False)

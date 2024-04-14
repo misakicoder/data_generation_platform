@@ -14,16 +14,8 @@ class OssUtil:
         self.endpoint = 'https://oss-cn-beijing.aliyuncs.com'
         self.bucket = oss2.Bucket(self.auth, self.endpoint, 'data-generation') 
 
-    def upload(self, prefix , data_name , local_file, befix = ".csv"):
-        file_name = f"{data_name}_{datetime.now().strftime('%Y%m%d%H%M%S')}"
-
-        if not os.path.exists(local_dir + prefix):
-            os.makedirs(local_dir + prefix)
-
-        with open(local_dir + prefix + file_name + befix, "wb") as f:
-            f.write(local_file.read())
-        self.bucket.put_object_from_file(prefix + file_name + befix, local_dir + prefix + file_name + befix)
-        os.remove(local_dir + prefix + file_name + befix)
+    def upload(self, prefix , file_name , local_file, befix = ".csv"):
+        self.bucket.put_object_from_file(prefix + file_name + befix, local_file)
         return f"{prefix}{file_name}{befix}"
     
     def download(self, abs_file_name):

@@ -63,7 +63,7 @@ const marked_datas = ref<Array<{[key: string]: any}>>([])
 const selected_cleaned_or_marked_data = ref('')
 
 const select_cleanedData = () => {
-    axios.get('/api/cleaned_data/',{ params: { task_type: current_task.value.task_type }}).then(res => {
+    axios.get('/api/cleaned_data/',{ params: { task_type: current_task.value.task_type,algorithm:current_task.value.task_algorithm }}).then(res => {
         if(res.data.cleaned_datas.length == 0){
             cleaned_datas.value = []
             alert("没有清洗过数据,请先清洗数据")
@@ -73,7 +73,7 @@ const select_cleanedData = () => {
 }
 
 const select_markedData = () => {
-    axios.get('/api/marked_data/',{ params: { task_type: current_task.value.task_type }}).then(res => {
+    axios.get('/api/marked_data/',{ params: { task_type: current_task.value.task_type,algorithm:current_task.value.task_algorithm }}).then(res => {
         if(res.data.marked_datas.length == 0){
             marked_datas.value = []
             alert("没有标记过数据,请先标记数据")
@@ -83,51 +83,16 @@ const select_markedData = () => {
 }
 
 const start_preprocess = () => {
-    alert("点击了")
-    preprocess_or_not.value = !preprocess_or_not.value
+    axios.post('/api/preprocessed_data/',{cleaned_or_marked_data:selected_cleaned_or_marked_data.value}).then(res => {
+        if(res.data.status == "success"){
+            alert("预处理成功")
+        }
+        else{
+            alert("预处理失败")
+        }
+    })
 }
-// onMounted(() => {
-//     setTimeout(() => {
-//         get_story()
-//     }, 100);
-// })
 
-// const generate_scripts = () => {
-//     current_task.value.status = 'pending'
-//     axios.put('/api/scripts/', { task_id: current_task.value.task_id }).then(_res => {
-//         update_current_task()
-//     })
-// }
-
-// const get_story = () => {
-//     current_task.value.status = 'pending'
-//     axios.get('/api/story/', { params: { task_id: current_task.value.task_id } }).then(res => {
-//         let story = res.data.story
-//         story.replace(/\"/g, '')
-//         story = story.replace(/\\n/g, '\n')
-//         current_task.value.story = story
-
-//         if (current_task.value.story == "") {
-//             regenerate_story()
-//         }
-//         else {
-//             current_task.value.status = 'ready'
-//         }
-//     })
-// }
-
-// const regenerate_story = () => {
-//     current_task.value.story = ""
-//     axios.put('/api/story/', { task_id: current_task.value.task_id }).then(_res => {
-//         update_current_task()
-//     })
-// }
-
-// const modify_story = () => {
-//     axios.post('/api/story/', { task_id: current_task.value.task_id, story: current_task.value.story }).then(_res => {
-//         get_story()
-//     })
-// }
 </script>
 
 <style scoped>

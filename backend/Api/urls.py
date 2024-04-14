@@ -34,10 +34,12 @@ urlpatterns = [
     #Data
     path("data/", data.as_view(), name="data"),
     path("ori_data/", ori_data.as_view(), name="ori_data"),
+    path("data_cols/",data_cols.as_view(),name="data_cols"),
     path("cleaned_data/", cleaned_data.as_view(), name="cleaned_data"),
     path("marked_data/", marked_data.as_view(), name="marked_data"),
     path("preprocessed_data/", preprocessed_data.as_view(), name="preprocessed_data"),
     path("marked_preprocessed_data/", marked_preprocessed_data.as_view(), name="marked_preprocessed_data"),
+    path("result/", result.as_view(), name="result"),
     #Algorithm
     path("algorithms/", algorithms.as_view(), name="algorithms"),
     #Model

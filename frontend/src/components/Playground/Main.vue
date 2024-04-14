@@ -1,5 +1,13 @@
 <template>
     <div>
+        <div class="min-h-30 flex flex-col bg-green-500 border shadow-sm rounded-xl dark:bg-slate-900 dark:border-gray-700 dark:shadow-slate-700/[.7]">
+            <div class="flex flex-auto flex-col justify-center items-center p-4 md:p-5">
+                <p class="mt-2 text-red-500 dark:text-yellow-400">
+                当前任务选择的算法是:{{ current_task.task_algorithm }}
+                </p>
+            </div>
+        </div>
+
         <div class="hs-accordion-group" data-hs-accordion-always-open>
             <div class="hs-accordion active" id="hs-basic-always-open-heading-one">
                 <button
