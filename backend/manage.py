@@ -2,6 +2,8 @@
 """Django's command-line utility for administrative tasks."""
 import os
 import sys
+from util.worker import create_global_task_queue,worker_multiprocessing
+from multiprocessing import Process
 
 
 def main():
@@ -15,6 +17,10 @@ def main():
             "available on your PYTHONPATH environment variable? Did you "
             "forget to activate a virtual environment?"
         ) from exc
+    if os.environ.get('RUN_MAIN') == 'true':
+        # 要在 django 子进程调用，不然会被调用 2 遍
+        create_global_task_queue()
+        worker_multiprocessing()
     execute_from_command_line(sys.argv)
 
 

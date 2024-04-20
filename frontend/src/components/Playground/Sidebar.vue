@@ -91,15 +91,6 @@
                             </RouterLink>
                         </li>
                         <li>
-                            <RouterLink to="/playground/setting">
-                                <div
-                                    class="flex items-center gap-x-3.5 py-2 px-2.5  text-sm text-neutral-700 rounded-lg hover:bg-neutral-100 dark:hover:bg-neutral-900 dark:text-white dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-neutral-600 cursor-pointer">
-                                    <i class="ti ti-settings-2 text-lg"></i>
-                                    设置
-                                </div>
-                            </RouterLink>
-                        </li>
-                        <li>
                             <div class="flex items-center gap-x-3.5 py-2 px-2.5  text-sm text-neutral-700 rounded-lg hover:bg-neutral-100 dark:hover:bg-neutral-900 dark:text-white dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-neutral-600 cursor-pointer"
                                 @click="logout">
                                 <i class="ti ti-logout text-lg"></i>

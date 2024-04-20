@@ -40,6 +40,7 @@ urlpatterns = [
     path("preprocessed_data/", preprocessed_data.as_view(), name="preprocessed_data"),
     path("marked_preprocessed_data/", marked_preprocessed_data.as_view(), name="marked_preprocessed_data"),
     path("result/", result.as_view(), name="result"),
+    path("result_zip/", result_zip.as_view(), name="result_zip"),
     #Algorithm
     path("algorithms/", algorithms.as_view(), name="algorithms"),
     #Model

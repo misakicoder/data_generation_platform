@@ -8,7 +8,7 @@ export interface ITask {
   task_id: string;
   task_type: string;
   task_algorithm: string;
-  task_stated: "pending" | "running" | "ready"| "error";
+  task_state: string;
   task_name: string;
 }
 
@@ -20,7 +20,7 @@ export const current_task = ref<ITask>({
   task_id: "",
   task_type: "",
   task_algorithm: "",
-  task_stated: "ready",
+  task_state: "",
   task_name: "",
 });
 
@@ -79,7 +79,7 @@ export const get_current_task = () => {
   axios
     .get("/api/task/", { params: { task_id: current_task.value.task_id } })
     .then(async (res) => {
-      Object.assign(current_task.value, res.data.task);
+      await Object.assign(current_task.value, res.data.task);
       await get_algorithm_list();
       await get_data_manager();
     })

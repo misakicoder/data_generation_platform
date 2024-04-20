@@ -19,8 +19,12 @@ class OssUtil:
         return f"{prefix}{file_name}{befix}"
     
     def download(self, abs_file_name):
+        if not os.path.exists(os.path.dirname(abs_file_name)):
+            os.makedirs(os.path.dirname(abs_file_name))
         self.bucket.get_object_to_file(abs_file_name, local_dir + abs_file_name)
         return local_dir + abs_file_name
 
+    def search_by_prefix(self,dir,prefix):
+        return [obj.key for obj in oss2.ObjectIterator(self.bucket, prefix=dir+prefix)]
 
 ossUtil = OssUtil()

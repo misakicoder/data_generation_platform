@@ -18,7 +18,7 @@ class Data(models.Model):
 
 class Result(models.Model):
     result_id = models.BigAutoField(primary_key=True)
-    result_url = models.CharField(max_length=1000,blank=False)
+    result_url = models.CharField(max_length=1000,default='')
     task_id = models.ForeignKey(Task, on_delete=models.CASCADE)
 
 class ori_data_cols(models.Model):

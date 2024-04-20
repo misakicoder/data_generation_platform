@@ -5,8 +5,8 @@ import logging
 from datetime import datetime
 import os
 
-logger = logging.getLogger(__name__)
 
+logger = logging.getLogger(__name__)
 
 
 local_dir = "static/"
@@ -121,7 +121,7 @@ def preprocess_data_in_TimeGAN(cleaned_or_marked_url,task_type,data_description,
         # 将 DataFrame 转换为 NumPy 数组
         cleaned_or_marked_data = df.to_numpy()
         #将数据归一化
-        cleaned_or_marked_data = MinMaxScaler(cleaned_or_marked_data)
+        # cleaned_or_marked_data = MinMaxScaler(cleaned_or_marked_data)
         # 预处理
         temp_data = []    
         # 截断数组
@@ -149,3 +149,23 @@ def preprocess_data_in_TimeGAN(cleaned_or_marked_url,task_type,data_description,
         logger.error(f"error:{e}")
         return None,str(e)
 
+
+def get_img_result(result_id):
+    try:
+        file_paths = ossUtil.search_by_prefix(dir="result/",prefix=str(result_id))
+        img_paths = []
+        for file in file_paths:
+            if file.endswith(".png"):
+                img_paths.append(file)
+        return img_paths
+    except Exception as e:
+        logger.error(f"error:{e}")
+        return None,str(e)
+
+def get_zip_result(result_url):
+    try:
+        local_zip_path = ossUtil.download(result_url)
+        return local_zip_path
+    except Exception as e:
+        logger.error(f"error:{e}")
+        return None,str(e)

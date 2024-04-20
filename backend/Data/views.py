@@ -1,10 +1,11 @@
 from django.shortcuts import render
 from django.http import JsonResponse
+from django.http import FileResponse
 from django.views import View
 from Task.models import Task
 from User.models import User
 from Model.models import Model
-from .models import Data,ori_data_cols
+from .models import Data,ori_data_cols,Result
 from util.ossUtil import ossUtil
 import json
 import logging
@@ -12,11 +13,16 @@ from .services import *
 from Model.services import *
 from datetime import datetime
 import os
-
+from util.worker import task_queue
 logger = logging.getLogger(__name__)
-
+import chardet
 local_dir = "static/"
 # Create your views here.
+def detect_encoding(file_path):
+    with open(file_path, 'rb') as f:
+        result = chardet.detect(f.read())
+    return result['encoding']
+
 class data(View):
     def post(self, request):
         kwargs:dict = json.loads(request.POST.get("body")) 
@@ -44,6 +50,8 @@ class data(View):
                 task_type=task_type,
                 user_id=user,
             )
+            encoding = detect_encoding(local_dir + prefix + file_name + befix)
+            print(encoding)
             ori_data = pd.read_csv(local_dir + prefix + file_name + befix)
             cols = ori_data.columns.tolist()
             cols_str = ",".join(cols)
@@ -121,6 +129,8 @@ class cleaned_data(View):
                 is_reverse=is_reverse,
                 algorithm=algorithm
             )
+
+
             if cleaned_data_url is None:
                 return JsonResponse({"status": "error", "message": msg+"请去除掉包含字符串的列"})
             cleaned_data,created = Data.objects.get_or_create(
@@ -134,9 +144,26 @@ class cleaned_data(View):
                     "data_description":"已经清洗过的数据"+"_"+ori_data['data_description']
                 }
             )
+            
             if not created:
                 cleaned_data.cleaned_data_url = cleaned_data_url
                 cleaned_data.save()
+            
+            #更新列名称
+            ori_data_col = ori_data_cols.objects.get(data_id=Data.objects.get(data_id=ori_data['data_id']))
+            cols_str = ori_data_col.cols
+            cols = cols_str.split(",")
+            cols = [col for col in cols if col not in del_cols]
+            cols_str = ",".join(cols)
+            if created:
+                ori_data_cols.objects.create(
+                    data_id=cleaned_data.data_id,
+                    cols=cols_str
+                )
+            else:
+                ori_data_col.cols = cols_str
+                ori_data_col.save()
+
             return JsonResponse({"status": "success", "message": "clean data successful"})
         except Exception as e:
             logger.error(f"error:{e}")
@@ -234,9 +261,13 @@ class result(View):
             user_id = request.session.get("user_id")
             if user_id is None:
                 return JsonResponse({"status": "error", "message": "Authentication required"}, status=401)
-            task_type = request.GET.get("task_type")
-            results = Data.objects.filter(user_id=user_id,task_type=task_type).exclude(result_url='').values()
-            return JsonResponse({"status": "success", "message": "Get result successful", "results": list(results)})
+            task_id = request.GET.get("task_id")
+            task =  Task.objects.get(task_id=task_id)
+            result_id = task.result_id
+            if result_id == "":
+                return JsonResponse({"status": "error", "message": "No result"})
+            img_paths = get_img_result(result_id)
+            return JsonResponse({"status": "success", "message": "Get result successful", "img_results": img_paths})
         except Exception as e:
             logger.error(f"error:{e}")
             return JsonResponse({"status": "error", "message": str(e)})
@@ -250,17 +281,36 @@ class result(View):
             task_id = kwargs.get("task_id")
             data_id = kwargs.get("data_id")
             model_id = kwargs.get("model_id")
+            result_num = kwargs.get("result_num")
             data = Data.objects.get(data_id=data_id)
             model = Model.objects.get(model_id=model_id)
             task = Task.objects.get(task_id=task_id)
+            task.task_state = "running"
+            task.save()
+
             preprecessed_data_url = data.preprocessed_data_url
             model_url = model.model_url
-            result_url =  start_train(
-                preprocessed_data_url=preprecessed_data_url,
-                model_url=model_url,
-            )
+            args = (preprecessed_data_url,model_url,data.data_type,result_num)
+            task_queue.put((task_id,task.task_type,args))
+            
             #存储到数据库
             return JsonResponse({"status": "success", "message": "result post successful"})
+        except Exception as e:
+            logger.error(f"error:{e}")
+            return JsonResponse({"status": "error", "message": str(e)})
+
+
+class result_zip(View):
+    def get(self, request):
+        try:
+            task_id = request.GET.get("task_id")
+            result_id = Task.objects.get(task_id=task_id).result_id
+            result_url = Result.objects.get(result_id=result_id).result_url
+            local_zip_path = get_zip_result(result_url)
+            response = FileResponse(open(local_zip_path, 'rb'))
+            response['Content-Type'] = 'application/zip'
+            response['Content-Disposition'] = 'attachment; filename="%s"' % os.path.basename(local_zip_path)
+            return response
         except Exception as e:
             logger.error(f"error:{e}")
             return JsonResponse({"status": "error", "message": str(e)})
