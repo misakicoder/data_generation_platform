@@ -6,6 +6,7 @@ import All from "@/components/Playground/All.vue";
 import Main from "@/components/Playground/Main.vue";
 import Login from "@/views/Login.vue";
 import Loading from "@/components/Playground/Loading.vue";
+import My from "@/components/Playground/My.vue";
 
 declare global {
   interface Window {
@@ -30,8 +31,13 @@ const routes = [
     {
       path: "loading/:id?",
       component: Loading,
-    }
-  ],}
+    },
+    {
+      path : "my", 
+      component: My,
+    },
+  ],},
+  
 ];
 
 const router = createRouter({

@@ -82,7 +82,7 @@
                 <div class="hs-accordion-group p-6 w-full flex flex-col flex-wrap">
                     <ul class="space-y-1.5">
                         <li>
-                            <RouterLink to="/my">
+                            <RouterLink to="/playground/my">
                                 <div
                                     class="flex items-center gap-x-3.5 py-2 px-2.5  text-sm text-neutral-700 rounded-lg hover:bg-neutral-100 dark:hover:bg-neutral-900 dark:text-white dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-neutral-600 cursor-pointer">
                                     <i class="ti ti-home text-lg"></i>

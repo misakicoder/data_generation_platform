@@ -13,6 +13,7 @@ from .services import *
 from Model.services import *
 from datetime import datetime
 import os
+import io
 from util.worker import task_queue
 logger = logging.getLogger(__name__)
 import chardet
@@ -24,6 +25,18 @@ def detect_encoding(file_path):
     return result['encoding']
 
 class data(View):
+    def get(self, request):
+        try:
+            user_id = request.session.get("user_id")
+            if user_id is None:
+                return JsonResponse({"status": "error", "message": "Authentication required"}, status=401)
+            user =  User.objects.get(user_id=user_id)
+            data = Data.objects.filter(user_id=user).values()
+            return JsonResponse({"status": "success", "message": "Get data successful", "data": list(data)})
+        except Exception as e:
+            logger.error(f"error:{e}")
+            return JsonResponse({"status": "error", "message": str(e)})
+    
     def post(self, request):
         kwargs:dict = json.loads(request.POST.get("body")) 
         try:
@@ -65,6 +78,44 @@ class data(View):
             logger.error(f"error:{e}")
             return JsonResponse({"status": "error", "message": str(e)}) 
 
+    def delete(self, request):
+        kwargs:dict = json.loads(request.body) 
+        try:
+            data_id = kwargs.get("data_id")
+            data = Data.objects.get(data_id=data_id)
+            data.delete()
+            return JsonResponse({"status": "success", "message": "Data delete successful"})
+        except Exception as e:
+            logger.error(f"error:{e}")
+            return JsonResponse({"status": "error", "message": str(e)})
+    
+    def put(self, request):
+        kwargs:dict = json.loads(request.body) 
+        try:
+            data_id = kwargs.get("data_id")
+            print(data_id)
+            data = Data.objects.get(data_id=data_id)
+            data_description = data.data_description
+            if "预处理过的数据" in data_description:
+                data_url = data.preprocessed_data_url
+            elif "标记过预处理过的数据" in data_description:
+                data_url = data.marked_preprocessed_data_url
+            elif "标记过的数据" in data_description:
+                data_url = data.marked_data_url
+            elif "已经清洗过的数据" in data_description:
+                data_url = data.cleaned_data_url
+            else:
+                data_url = data.ori_data_url
+            data_path =  ossUtil.download(data_url)
+            with open(data_path, "rb") as f:
+                data = pd.read_csv(f)
+            os.remove(data_path)
+            csv_data = data.to_csv(index=False).encode('utf-8')
+            csv_io = io.BytesIO(csv_data)
+            return FileResponse(csv_io)
+        except Exception as e:
+            logger.error(f"error:{e}")
+            return JsonResponse({"status": "error", "message": str(e)})
 
 class ori_data(View):
     def get(self, request):
@@ -157,7 +208,7 @@ class cleaned_data(View):
             cols_str = ",".join(cols)
             if created:
                 ori_data_cols.objects.create(
-                    data_id=cleaned_data.data_id,
+                    data_id=cleaned_data,
                     cols=cols_str
                 )
             else:

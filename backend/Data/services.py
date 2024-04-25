@@ -56,6 +56,8 @@ def clean_data(ori_data_url,task_type,data_description,del_cols,is_reverse,algor
     #从oss下载文件
     if algorithm == "TimeGAN":
         return clean_data_in_TimeGAN(ori_data_url,task_type,data_description,del_cols,is_reverse)
+    if algorithm == "LSTM":
+        return clean_data_in_TimeGAN(ori_data_url,task_type,data_description,del_cols,is_reverse)
     
 
 def MinMaxScaler(data):

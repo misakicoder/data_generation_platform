@@ -58,8 +58,9 @@ interface DataTypes {
   [key: string]: string[];
 }
 const data_types: DataTypes = {
-  "load_generate": ["96点数据","24点数据"],
+  "load_generate": ["96点数据","48点数据","24点数据"],
   "weather_generate":["天气数据"],
+  "load_predict": ["96点数据","48点数据","24点数据"],
 }
 
 const selectDataType = () => {
