@@ -8,8 +8,8 @@ local_dir = "static/"
 
 class OssUtil:
     def __init__(self):
-        self.accessKeyId = 'LTAI5tQdXzhbQLLNwjxEUakj'
-        self.accessKeySecret = 'cd11bdJWPv8FFqA6iyBp0cuWndo8mC'
+        self.accessKeyId = ''
+        self.accessKeySecret = ''
         self.auth = oss2.Auth(self.accessKeyId, self.accessKeySecret)
         self.endpoint = 'https://oss-cn-beijing.aliyuncs.com'
         self.bucket = oss2.Bucket(self.auth, self.endpoint, 'data-generation') 
